@@ -1,0 +1,35 @@
+version: "3.2"
+
+services:
+  chat-db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=greenoffice
+      - POSTGRES_USER=inb
+      - POSTGRES_PASSWORD=123456
+    volumes:
+      - /var/lib/postgresql/data/:/var/lib/postgresql/data/
+
+  chat-backend:
+    build: ./backend
+    image: chat-backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app/backend
+    ports:
+      - 8000:8000
+    depends_on:
+      - chat-db
+
+  chat-frontend:
+    build: ./frontend
+    image: chat-frontend
+    command: npm init
+    volumes:
+      - ./frontend:/app/frontend
+    ports:
+      - 3000:3000
+    depends_on:
+      - chat-db
+      - chat-backend
+    
