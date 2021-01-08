@@ -9,6 +9,9 @@ RUN pip install --upgrade pip
 
 WORKDIR /app/backend
 
+# update api and necessary linux dependencies
+RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev
+
 # copy requirements file and paste into working directory
 COPY requirements.txt /app/backend/
 
